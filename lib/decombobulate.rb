@@ -3,7 +3,6 @@
 require_relative "decombobulate/version"
 require "JSON"
 require "CSV"
-require "debug"
 
 class Decombobulate
   class Error < StandardError; end
