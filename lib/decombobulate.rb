@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require_relative "decombobulate/version"
-require "JSON"
-require "CSV"
+require "json"
+require "csv"
 
 class Decombobulate
   class Error < StandardError; end

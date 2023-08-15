@@ -102,10 +102,13 @@ class TestDecombobulate < Minitest::Test
     object = [{
       a: "test_1",
       b: ["test_2", "test_3", "test_4"]
+    }, {
+      a: "test_5",
+      b: ["test_6", "test_7", "test_8"]
     }]
 
     decombobulate_object = Decombobulate.new(object)
-    assert_equal [["test_1", "test_2", "test_3", "test_4"]], decombobulate_object.rows
+    assert_equal [["test_1", "test_2", "test_3", "test_4"], ["test_5", "test_6", "test_7", "test_8"]], decombobulate_object.rows
   end
 
   def test_a_nested_array_of_objects_works
