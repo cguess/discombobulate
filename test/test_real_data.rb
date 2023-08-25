@@ -50,7 +50,7 @@ class TestDecombobulate < Minitest::Test
       "url": "https://www.realfact.com/factchecks/2021/feb/03/starwars"
     }]
 
-    assert_equal Decombobulate.new(object).headers, [
+    assert_equal Decombobulate.new(object).headers.to_set, [
       "id",
       "@context",
       "@type",
@@ -64,8 +64,8 @@ class TestDecombobulate < Minitest::Test
       "itemReviewed.@type",
       "itemReviewed.datePublished",
       "itemReviewed.name",
-      "itemReviewed.appearance.url",
-      "itemReviewed.appearance.@type",
+      "itemReviewed.appearance.1.url",
+      "itemReviewed.appearance.1.@type",
       "itemReviewed.firstAppearance.url",
       "itemReviewed.firstAppearance.@type",
       "itemReviewed.author.@type",
@@ -81,8 +81,8 @@ class TestDecombobulate < Minitest::Test
       "reviewRating.image",
       "reviewRating.alternateName",
       "url"
-    ]
+    ].to_set
 
-    assert_equal Decombobulate.new(object).to_csv, "id,@context,@type,author.@type,author.name,author.url,author.image,author.sameAs,claimReviewed,datePublished,itemReviewed.@type,itemReviewed.datePublished,itemReviewed.name,itemReviewed.appearance.url,itemReviewed.appearance.@type,itemReviewed.firstAppearance.url,itemReviewed.firstAppearance.@type,itemReviewed.author.@type,itemReviewed.author.name,itemReviewed.author.jobTitle,itemReviewed.author.image,itemReviewed.author.sameAs,reviewRating.@type,reviewRating.ratingValue,reviewRating.bestRating,reviewRating.worstRating,reviewRating.ratingExplanation,reviewRating.image,reviewRating.alternateName,url\n7ca6f341-88b8-49ff-a0a0-ee7ef8ea1d20,https://schema.org,ClaimReview,Organization,realfact,https://www.realfact.com/,,,The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.,2021-02-01,Claim,2021-01-30,Star Wars claim,https://foobar.com/13531,CreativeWork,https://foobar.com/13531,CreativeWork,Person,Viral image,On the internet,,,Rating,4,5,0,Don't worry about it,https://static.politifact.com/politifact/rulings/meter-false.jpg,False,https://www.realfact.com/factchecks/2021/feb/03/starwars\n"
+    assert_equal Decombobulate.new(object).to_csv, "id,@context,@type,claimReviewed,datePublished,url,author.@type,author.name,author.url,author.image,author.sameAs,itemReviewed.@type,itemReviewed.datePublished,itemReviewed.name,itemReviewed.appearance.1.url,itemReviewed.appearance.1.@type,itemReviewed.firstAppearance.url,itemReviewed.firstAppearance.@type,itemReviewed.author.@type,itemReviewed.author.name,itemReviewed.author.jobTitle,itemReviewed.author.image,itemReviewed.author.sameAs,reviewRating.@type,reviewRating.ratingValue,reviewRating.bestRating,reviewRating.worstRating,reviewRating.ratingExplanation,reviewRating.image,reviewRating.alternateName\n7ca6f341-88b8-49ff-a0a0-ee7ef8ea1d20,https://schema.org,ClaimReview,The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide.,2021-02-01,https://www.realfact.com/factchecks/2021/feb/03/starwars,Organization,realfact,https://www.realfact.com/,,,Claim,2021-01-30,Star Wars claim,https://foobar.com/13531,CreativeWork,https://foobar.com/13531,CreativeWork,Person,Viral image,On the internet,,,Rating,4,5,0,Don't worry about it,https://static.politifact.com/politifact/rulings/meter-false.jpg,False\n"
   end
 end

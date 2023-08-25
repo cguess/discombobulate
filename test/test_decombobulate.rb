@@ -55,7 +55,7 @@ class TestDecombobulate < Minitest::Test
     }
 
     decombobulate_object = Decombobulate.new(object)
-    assert_equal ["test_1", "test_2"], decombobulate_object.collapse_json_object_row_to_csv_row(object)
+    assert_equal ["test_1", "test_2"], decombobulate_object.rows.first
   end
 
   def test_a_one_level_nested_structure_row
@@ -68,7 +68,7 @@ class TestDecombobulate < Minitest::Test
     }
 
     decombobulate_object = Decombobulate.new(object)
-    assert_equal ["test_1", "test_2", "test_3"], decombobulate_object.collapse_json_object_row_to_csv_row(object)
+    assert_equal ["test_1", "test_2", "test_3"], decombobulate_object.rows.first
   end
 
   def test_a_two_level_nested_structure_row
@@ -85,7 +85,7 @@ class TestDecombobulate < Minitest::Test
     }
 
     decombobulate_object = Decombobulate.new(object)
-    assert_equal ["test_1", "test_2", "test_3", "test_4", "test_5"], decombobulate_object.collapse_json_object_row_to_csv_row(object)
+    assert_equal ["test_1", "test_2", "test_3", "test_4", "test_5"], decombobulate_object.rows.first
   end
 
   def test_an_array_is_converted_to_a_string
@@ -119,6 +119,26 @@ class TestDecombobulate < Minitest::Test
 
     decombobulate_object = Decombobulate.new(object)
     assert_equal [["test_1", "test_2", "test_3", "test_4"]], decombobulate_object.rows
+  end
+
+  def test_arrays_of_different_sizes_properly_fills_in_nil_values
+    object = [{
+      a: "test_1",
+      b: [
+        { c: "test_2", d: "test_3", e: "test_4" },
+        { c: "test_5", e: "test_6" },
+      ]
+    }, {
+      a: "test_1",
+      b: [
+        { c: "test_2", d: "test_3", e: "test_4" },
+        { c: "test_5", f: "test_8" },
+      ]
+    }]
+
+    decombobulate_object = Decombobulate.new(object)
+    assert_equal [["test_1", "test_2", "test_3", "test_4", "test_5", "test_6", nil], ["test_1", "test_2", "test_3", "test_4", "test_5", nil, "test_8"]], decombobulate_object.rows
+
   end
 
   def test_can_generate_csv
