@@ -33,9 +33,9 @@ Gem::Specification.new do |spec|
   # spec.add_dependency "example-gem", "~> 1.0"
 
   spec.add_development_dependency "rubocop"
-  spec.add_development_dependency "rubocop-rails"
   spec.add_development_dependency "rubocop-performance"
-  spec.add_development_dependency "rubocop-rails_config"
+  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "activesupport", "7.0.8"
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
