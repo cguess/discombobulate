@@ -3,6 +3,7 @@
 require_relative "decombobulate/version"
 require "json"
 require "csv"
+require "debug"
 
 class Decombobulate
   class Error < StandardError; end
@@ -115,12 +116,17 @@ private
         @columns.delete(column_name)
         json_to_csv(value, column_name, depth: depth + 1)
       else
-        column_name = nested_name.nil? ? key : "#{nested_name}.#{key}".to_sym
-        @columns[column_name] = [] unless @columns.has_key?(column_name)
+        column_name = nested_name.nil? ? key.to_sym : "#{nested_name}.#{key}".to_sym
+        @columns[column_name] = [] unless @columns.has_key?(column_name) || !@columns[column_name].nil?
 
         # Fill the column with nils up to the current length of the other @columns
         # get the longest column size
-        longest_column_size = @columns.values.map(&:size).max
+        begin
+          longest_column_size = @columns.values.map(&:size).max
+        rescue StandardError => e
+          debugger
+        end
+
 
         while @columns[column_name].size < longest_column_size - 1
           @columns[column_name] << nil
@@ -130,6 +136,97 @@ private
       end
     end
 
-    @columns
+    @columns = group_columns(@columns)
+  end
+
+  def group_columns(columns)
+    grouped_keys_array = group_keys(columns.keys)
+
+    reordered_columns = {}
+    grouped_keys_array.each do |key|
+      # Try to find the key using the string or symbol version
+      # First convert to string because we don't know what type this is
+      key = key.to_s
+      key = key.to_sym unless columns.has_key?(key)
+      new_key = key.to_sym
+      reordered_columns[new_key] = columns[key]
+    end
+
+    puts "reordered: #{reordered_columns}"
+
+    reordered_columns
+  end
+
+  def group_keys(keys = [], previous_key = nil)
+    # Arrange the columns so that they're grouped as nested in the json
+    ordered_keys = []
+
+    keys.each do |key|
+      key_path = key.to_s.split(".")
+      if key_path.size > 1
+        # Grab all keys that include the same first part
+        subcolumns = []
+        # get the keys and call recursively
+
+        keys.each do |k|
+          k_path = k.to_s.split(".")
+          if k_path[0] == key_path[0]
+            subcolumns << k_path[1..-1].join(".")
+          end
+        end
+
+        # Since we don't want to sort the same top we need to remove the others
+        for_recursion = subcolumns.map do |column_name|
+          column_name.to_sym
+        end
+
+        for_recursion.each do |key_to_delete|
+          keys.delete("#{key_path[0]}.#{key_to_delete}".to_sym)
+        end
+
+        grouped_keys = group_keys(for_recursion, key_path[0])
+
+        if previous_key.nil?
+          ordered_keys << grouped_keys
+        else
+          ordered_keys << grouped_keys.map do |subkey|
+            "#{previous_key}.#{subkey}".to_sym
+          end
+        end
+
+      else
+        to_add = previous_key.nil? ? key : "#{previous_key}.#{key}"
+        next if to_add.end_with?(".")
+
+        ordered_keys << to_add
+      end
+    end
+    ordered_keys.flatten.map(&:to_sym)
   end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

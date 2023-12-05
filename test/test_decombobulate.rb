@@ -138,7 +138,6 @@ class TestDecombobulate < Minitest::Test
 
     decombobulate_object = Decombobulate.new(object)
     assert_equal [["test_1", "test_2", "test_3", "test_4", "test_5", "test_6", nil], ["test_1", "test_2", "test_3", "test_4", "test_5", nil, "test_8"]], decombobulate_object.rows
-
   end
 
   def test_can_generate_csv
