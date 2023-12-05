@@ -23,6 +23,7 @@ GEM
       ast (~> 2.4.1)
       racc
     racc (1.7.3)
+    rack (3.0.8)
     rainbow (3.1.1)
     rake (13.1.0)
     regexp_parser (2.8.3)
@@ -40,9 +41,28 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.30.0)
       parser (>= 3.2.1.0)
+    rubocop-md (1.2.2)
+      rubocop (>= 1.0)
+    rubocop-minitest (0.33.0)
+      rubocop (>= 1.39, < 2.0)
+    rubocop-packaging (0.5.2)
+      rubocop (>= 1.33, < 2.0)
     rubocop-performance (1.19.1)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
+    rubocop-rails (2.22.2)
+      activesupport (>= 4.2.0)
+      rack (>= 1.1)
+      rubocop (>= 1.33.0, < 2.0)
+      rubocop-ast (>= 1.30.0, < 2.0)
+    rubocop-rails_config (1.16.0)
+      rubocop (>= 1.57.0)
+      rubocop-ast (>= 1.26.0)
+      rubocop-md
+      rubocop-minitest (~> 0.22)
+      rubocop-packaging (~> 0.5)
+      rubocop-performance (~> 1.11)
+      rubocop-rails (~> 2.0)
     ruby-progressbar (1.13.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -54,10 +74,11 @@ PLATFORMS
 DEPENDENCIES
   activesupport (= 7.0.8)
   decombobulate!
-  minitest
   rake (~> 13.1)
   rubocop
   rubocop-performance
+  rubocop-rails
+  rubocop-rails_config
 
 BUNDLED WITH
    2.4.22

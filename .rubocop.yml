@@ -1,9 +1,19 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+inherit_gem:
+  rubocop-rails_config:
+    - config/rails.yml
+
 AllCops:
   Exclude:
-    - 'bin/**/*'
     - 'pkg/**/*'
     - 'sig/**/*'
+    - 'bin/**/*'
+
   TargetRubyVersion: 3.0
+
 
 # This sets us to use the standard Rails format instead of Rubocop's
 # opinionated Ruby style.
@@ -28,8 +38,17 @@ Lint/RescueException:
 Lint/Debugger:
   Enabled: true
 
+Rails/HasManyOrHasOneDependent:
+  Enabled: true
+
+Rails/HasAndBelongsToMany:
+  Enabled: true
+
 Style/NumericPredicate:
   Enabled: true
+
+Rails/RefuteMethods:
+  Enabled: false
 
 # This sets us to use the standard Rails format instead of Rubocop's
 # opinionated Ruby style.
