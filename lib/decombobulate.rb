@@ -152,8 +152,6 @@ private
       reordered_columns[new_key] = columns[key]
     end
 
-    puts "reordered: #{reordered_columns}"
-
     reordered_columns
   end
 
